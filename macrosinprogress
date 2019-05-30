@@ -1,0 +1,20 @@
+Option Explicit
+
+Sub MakeABook()
+    Dim newFileName As String
+    Dim currentFileName As String
+    'Below, we will change the file names to whatever works for you.
+    newFileName = "The Test Book.xls"
+    currentFileName = "report (1).xlsm"
+    
+    Dim newSheet As Worksheet
+    Dim currentBook As Workbook
+    Set currentBook = Workbooks("report (1).xlsm")
+    Set newSheet = currentBook.Worksheets.Add(Type:=xlWorksheet, After:=Application.ActiveSheet)
+    With newSheet
+        .Name = "Test Making New Sheet"
+    End With
+    
+    Sheets("data").Range("A1").Copy Destination:=Sheets("Test Making New Sheet").Range("A3")
+
+End Sub
