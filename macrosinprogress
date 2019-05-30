@@ -15,6 +15,8 @@ Sub MakeABook()
         .Name = "Test Making New Sheet"
     End With
     
-    Sheets("data").Range("A1").Copy Destination:=Sheets("Test Making New Sheet").Range("A3")
+    Worksheets("data").Range("A3").Copy _
+    Destination:=Worksheets(newSheet.Name).Range("A1")
 
 End Sub
+
