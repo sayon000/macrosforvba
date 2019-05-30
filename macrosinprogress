@@ -4,35 +4,39 @@ Sub MakeABook()
     'Below, we will change the file names to whatever works for you. If you wanna change the name, change the corresponding entry below
     'For example, if you want your new sheet to be called "Clean Data", do this: newSheetName =  "Clean Data" (the title has to be in quotes)
     'For file name, you have to type it exactly with all spaces and THE CORRECT ending.
-    Dim newSheetName As String
     Dim currentFileName As String
+    Dim newSheetName As String
+    Dim currentSheetName As String
     
-    newSheetName = "Test Making New Sheet"
     currentFileName = "report (1).xlsm"
+    newSheetName = "Test Making New Sheet"
+    currentSheetName = "data"
     
    'The bottom code is important because in the first two steps, we create a new worksheet and a new book object
    'In the "Set currentBook" part, what happens is we open and refer the the book we're using. Hence this is where we use the currentFileName
    'variable to open the book you specified earlier
    'Set newSheet into the add function gives us a new worksheet to play with
    
-    Dim newSheet As Worksheet
     Dim currentBook As Workbook
+    Dim newSheet As Worksheet
+    Dim dataSheet As Worksheet
     Set currentBook = Workbooks(currentFileName)
     Set newSheet = currentBook.Worksheets.Add(Type:=xlWorksheet, After:=Application.ActiveSheet)
+    Set dataSheet = Worksheets(currentSheetName)
     With newSheet
         .Name = newSheetName
     End With
     
-    Dim i As Integer
+    Dim r As Long, c As Long
     
    'As of now, what the bottom lines do is that they loop from rows 3 to 7 of the data sheet (hence i = 3 to 7) and copy the row
    'Then what happens is we select the i-2 row (because the row in the second is offset by 2 so that is how we do
    ' "A" & i-2 means that first we subtract 2 from i and then A is combined with the new value to get the first cell of the respective row
-    
-    For i = 3 To 7
-        currentBook.Sheets("data").Rows(i).EntireRow.Copy
-        currentBook.Sheets(newSheetName).Range("A" & i - 2).Select
-        currentBook.Sheets(newSheetName).Paste
-    Next i
-    
+    With newSheet
+        For r = 3 To 80
+            For c = 1 To 200
+                .Cells(r, c) = dataSheet.Cells(r, c)
+            Next c
+        Next r
+    End With
 End Sub
