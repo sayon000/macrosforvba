@@ -1,22 +1,32 @@
 Option Explicit
 
 Sub MakeABook()
-    Dim newFileName As String
+    'Below, we will change the file names to whatever works for you. If you wanna change the name, change the corresponding entry below
+    'For example, if you want your new sheet to be called "Clean Data", do this: newSheetName =  "Clean Data" (the title has to be in quotes)
+    'For file name, you have to type it exactly with all spaces and THE CORRECT ending.
+    Dim newSheetName As String
     Dim currentFileName As String
-    'Below, we will change the file names to whatever works for you.
-    newFileName = "The Test Book.xls"
+    
+    newSheetName = "Test Making New Sheet"
     currentFileName = "report (1).xlsm"
     
+   'The bottom code is important because in the first two steps, we create a new worksheet and a new book object
+   'In the "Set currentBook" part, what happens is we open and refer the the book we're using. Hence this is where we use the currentFileName
+   'variable to open the book you specified earlier
+   'Set newSheet into the add function gives us a new worksheet to play with
+   
     Dim newSheet As Worksheet
     Dim currentBook As Workbook
-    Set currentBook = Workbooks("report (1).xlsm")
+    Set currentBook = Workbooks(currentFileName)
     Set newSheet = currentBook.Worksheets.Add(Type:=xlWorksheet, After:=Application.ActiveSheet)
     With newSheet
-        .Name = "Test Making New Sheet"
+        .Name = newSheetName
     End With
     
-    Worksheets("data").Range("A3").Copy _
-    Destination:=Worksheets(newSheet.Name).Range("A1")
+   'As of now, what the bottom three lines do is that they copy the third row of the data sheet and puts it into the first row of the new data sheet.
+    
+    currentBook.Sheets("data").Rows(3).EntireRow.Copy
+    currentBook.Sheets(newSheetName).Range("A1").Select
+    currentBook.Sheets(newSheetName).Paste
 
 End Sub
-
