@@ -27,6 +27,16 @@ Sub MakeABook()
         .Name = newSheetName
     End With
     
+    Dim i As Long
+    Dim lowerBound As Long, upperBound As Long
+    lowerBound = 3
+    upperBound = 232
+    ReDim excludeArr(1 To upperBound - lowerBound + 1) As Long
+    For i = 1 To UBound(excludeArr)
+        excludeArr(i) = lowerBound + (i - 1)
+    Next i
+    
+'Wait for more comments on loops
     Dim r As Long, c As Long
     
    'As of now, what the bottom lines do is that they loop from rows 3 to 7 of the data sheet (hence i = 3 to 7) and copy the row
@@ -39,4 +49,5 @@ Sub MakeABook()
             Next c
         Next r
     End With
+    
 End Sub
