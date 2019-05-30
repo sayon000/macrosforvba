@@ -23,10 +23,16 @@ Sub MakeABook()
         .Name = newSheetName
     End With
     
-   'As of now, what the bottom three lines do is that they copy the third row of the data sheet and puts it into the first row of the new data sheet.
+    Dim i As Integer
     
-    currentBook.Sheets("data").Rows(3).EntireRow.Copy
-    currentBook.Sheets(newSheetName).Range("A1").Select
-    currentBook.Sheets(newSheetName).Paste
-
+   'As of now, what the bottom lines do is that they loop from rows 3 to 7 of the data sheet (hence i = 3 to 7) and copy the row
+   'Then what happens is we select the i-2 row (because the row in the second is offset by 2 so that is how we do
+   ' "A" & i-2 means that first we subtract 2 from i and then A is combined with the new value to get the first cell of the respective row
+    
+    For i = 3 To 7
+        currentBook.Sheets("data").Rows(i).EntireRow.Copy
+        currentBook.Sheets(newSheetName).Range("A" & i - 2).Select
+        currentBook.Sheets(newSheetName).Paste
+    Next i
+    
 End Sub
