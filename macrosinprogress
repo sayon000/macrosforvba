@@ -27,27 +27,12 @@ Sub MakeABook()
         .Name = newSheetName
     End With
     
-    Dim i As Long
-    Dim lowerBound As Long, upperBound As Long
-    lowerBound = 3
-    upperBound = 232
-    ReDim excludeArr(1 To upperBound - lowerBound + 1) As Long
-    For i = 1 To UBound(excludeArr)
-        excludeArr(i) = lowerBound + (i - 1)
-    Next i
-    
-'Wait for more comments on loops
-    Dim r As Long, c As Long
-    
-   'As of now, what the bottom lines do is that they loop from rows 3 to 7 of the data sheet (hence i = 3 to 7) and copy the row
-   'Then what happens is we select the i-2 row (because the row in the second is offset by 2 so that is how we do
-   ' "A" & i-2 means that first we subtract 2 from i and then A is combined with the new value to get the first cell of the respective row
-    With newSheet
-        For r = 3 To 80
-            For c = 1 To 200
-                .Cells(r, c) = dataSheet.Cells(r, c)
-            Next c
-        Next r
-    End With
+   'Cells(r,c) gets the cell at row r and column c
+   'This is all hardcoded because we do not need a generalized way to get things in this project
+   
+    currentBook.Sheets(currentSheetName).Range("A3:B461").Copy _
+    Destination:=newSheet.Range("A3:B461")
+    currentBook.Sheets(currentSheetName).Range("HX3:MF461").Copy _
+    Destination:=newSheet.Range("C3:DK461")
     
 End Sub
