@@ -35,4 +35,25 @@ Sub MakeABook()
     currentBook.Sheets(currentSheetName).Range("HX3:MF461").Copy _
     Destination:=newSheet.Range("C3:DK461")
     
+    
+End Sub
+
+Sub RemoveTheAnswerPortion()
+    Dim currentSheet As String
+    Dim word As String
+    currentSheet = "Sheet2"
+    Worksheets(currentSheet).Activate
+    word = Range("A1")
+    Range("A2").Value = "no"
+    Range("A2") = Right(word, Len(word) - 10)
+    Range("A3:B6") = "no"
+End Sub
+
+Sub ParseTheJson()
+    Dim Json As Object
+    Dim words As String
+    words = Range("A2").Value
+    Set Json = JsonConverter.ParseJson(words)
+    Range("A3") = Json("nodeId")
+    
 End Sub
