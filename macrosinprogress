@@ -38,22 +38,30 @@ Sub MakeABook()
     
 End Sub
 
-Sub RemoveTheAnswerPortion()
+Sub IsolateResponse()
     Dim currentSheet As String
     Dim word As String
+    Dim responsePosition As Integer
+    Dim endBracePosition As Integer
+    Dim cutStuff As String
     currentSheet = "Sheet2"
     Worksheets(currentSheet).Activate
     word = Range("A1")
-    Range("A2").Value = "no"
-    Range("A2") = Right(word, Len(word) - 10)
-    Range("A3:B6") = "no"
+    Range("A2").Value = "{"
+    responsePosition = InStr(word, """response""")
+    endBracePosition = InStr(responsePosition, word, "}")
+    cutStuff = Mid(word, responsePosition, (endBracePosition - responsePosition + 1))
+    Debug.Print word
+    Debug.Print InStr(word, """response""")
+    Debug.Print responsePosition
+    Debug.Print InStr(responsePosition, word, "}")
+    Debug.Print endBracePosition
+    Debug.Print cutStuff
+    
+    
 End Sub
 
 Sub ParseTheJson()
-    Dim Json As Object
-    Dim words As String
-    words = Range("A2").Value
-    Set Json = JsonConverter.ParseJson(words)
-    Range("A3") = Json("nodeId")
+    
     
 End Sub
