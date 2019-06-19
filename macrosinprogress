@@ -51,19 +51,33 @@ Sub IsolateResponse()
     'In this stuff, the index starts at 0, not one lol
     currentSheet = "Sheet2"
     Worksheets(currentSheet).Activate
-    word = Range("A1")
-    Range("A2").Value = ""
-    Debug.Print word
-    Do While tempPosition > 0
-        Range("A2").Value = Range("A2").Value & "{"
-        responsePosition = InStr(responsePosition + 1, word, """response""")
-        endBracePosition = InStr(responsePosition + 1, word, "}")
-        Debug.Print responsePosition & " is response"
-        Debug.Print endBracePosition & " is end brace"
-        cutStuff = Mid(word, responsePosition, (endBracePosition - responsePosition + 1))
-        Range("A2").Value = Range("A2").Value & cutStuff
-        tempPosition = InStr(responsePosition + 1, word, """response""")
+    Dim rowNum As Integer
+    Dim colNum As Integer
+    rowNum = 1
+    colNum = 1
+    Do While rowNum < 2
+        Do While colNum < 5
+            word = Cells(rowNum, colNum).Value
+            Cells(rowNum + 1, colNum).Value = ""
+            Debug.Print word
+            Do While tempPosition > 0
+                Cells(rowNum + 1, colNum).Value = Cells(rowNum + 1, colNum).Value & "{"
+                responsePosition = InStr(responsePosition + 1, word, """response""")
+                endBracePosition = InStr(responsePosition + 1, word, "}")
+                Debug.Print responsePosition & " is response"
+                Debug.Print endBracePosition & " is end brace"
+                cutStuff = Mid(word, responsePosition, (endBracePosition - responsePosition + 1))
+                Cells(rowNum + 1, colNum).Value = Cells(rowNum + 1, colNum).Value & cutStuff
+                tempPosition = InStr(responsePosition + 1, word, """response""")
+            Loop
+        colNum = colNum + 1
+        responsePosition = 1
+        tempPosition = 1
+        Debug.Print responsePosition & " after the loop"
+        Loop
+    rowNum = rowNum + 1
     Loop
+    
     
 End Sub
 
