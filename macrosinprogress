@@ -42,22 +42,28 @@ Sub IsolateResponse()
     Dim currentSheet As String
     Dim word As String
     Dim responsePosition As Integer
+    Dim tempPosition As Integer
     Dim endBracePosition As Integer
+    Dim initResPos As Integer
     Dim cutStuff As String
+    responsePosition = 1
+    tempPosition = 1
+    'In this stuff, the index starts at 0, not one lol
     currentSheet = "Sheet2"
     Worksheets(currentSheet).Activate
     word = Range("A1")
-    Range("A2").Value = "{"
-    responsePosition = InStr(word, """response""")
-    endBracePosition = InStr(responsePosition, word, "}")
-    cutStuff = Mid(word, responsePosition, (endBracePosition - responsePosition + 1))
+    Range("A2").Value = ""
     Debug.Print word
-    Debug.Print InStr(word, """response""")
-    Debug.Print responsePosition
-    Debug.Print InStr(responsePosition, word, "}")
-    Debug.Print endBracePosition
-    Debug.Print cutStuff
-    
+    Do While tempPosition > 0
+        Range("A2").Value = Range("A2").Value & "{"
+        responsePosition = InStr(responsePosition + 1, word, """response""")
+        endBracePosition = InStr(responsePosition + 1, word, "}")
+        Debug.Print responsePosition & " is response"
+        Debug.Print endBracePosition & " is end brace"
+        cutStuff = Mid(word, responsePosition, (endBracePosition - responsePosition + 1))
+        Range("A2").Value = Range("A2").Value & cutStuff
+        tempPosition = InStr(responsePosition + 1, word, """response""")
+    Loop
     
 End Sub
 
