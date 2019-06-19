@@ -172,18 +172,29 @@ Sub TestStuff()
     Dim responsePosition As Integer
     Dim endBracePosition As Integer
     Dim part As String
+    Dim leftSquareBracket As Integer
+    Dim rightSquareBracket As Integer
     Dim textWord As String
     Dim radioWord As String
     Dim tableWord As String
     textWord = """text"""
     radioWord = """radio"""
     tableWord = """tableinput"""
-    
-    testString = "{""response"":{""text"":""It was good""}"
+    part = ""
+    testString = "{""response"":[""4"",""4"",""4"",""4""],""id"":""cRfOQWkYns"",""type"":""tableinput""}"
+    testString = "{""response"":{""text"":""that i could make it into anything""}"
     responsePosition = InStr(1, testString, """response""")
     endBracePosition = InStr(1, testString, "}")
+'    leftSquareBracket = InStr(1, testString, "[")
+'    rightSquareBracket = InStr(1, testString, "]")
+'    part = Mid(testString, leftSquareBracket, (rightSquareBracket - leftSquareBracket + 1))
     If InStr(1, testString, textWord) > 0 Then
-    part = Mid(testString, responsePosition + 19, (endBracePosition - responsePosition - 19))
+        part = Mid(testString, responsePosition + 19, (endBracePosition - responsePosition - 19))
+    ElseIf InStr(1, testString, tableWord) > 0 Then
+        leftSquareBracket = InStr(1, testString, "[")
+        rightSquareBracket = InStr(1, testString, "]")
+        part = Mid(testString, leftSquareBracket, (rightSquareBracket - leftSquareBracket + 1))
+   End If
     Debug.Print part
 
     
