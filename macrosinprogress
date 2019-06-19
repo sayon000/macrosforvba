@@ -51,12 +51,13 @@ Sub IsolateResponse()
     Dim responseSheet As Worksheet
     Dim dataSheet As Worksheet
     Set currentBook = Workbooks(currentFileName)
-    Set responseSheet = currentBook.Worksheets.Add(Type:=xlWorksheet, After:=Application.ActiveSheet)
     Set dataSheet = Worksheets(currentSheetName)
+    Set responseSheet = currentBook.Worksheets.Add(Type:=xlWorksheet, After:=Application.ActiveSheet)
+    
     With responseSheet
         .Name = newSheetName
     End With
-    
+'Copy the whole worksheet then do the shit
     Dim word As String
     Dim responsePosition As Integer
     Dim tempPosition As Integer
@@ -74,8 +75,8 @@ Sub IsolateResponse()
     origColNum = 3
     rowNum = origRowNum
     colNum = origColNum
-    Do While rowNum < 22
-        Do While colNum < 10
+    Do While rowNum < 461
+        Do While colNum < 115
             word = currentBook.Sheets(currentSheetName).Cells(rowNum, colNum).Value
             Cells(rowNum, colNum).Value = ""
             Debug.Print word & " at row " & rowNum & " and at col " & colNum
@@ -106,5 +107,7 @@ Sub ParseTheJson()
     
     
 End Sub
+
+
 
 
