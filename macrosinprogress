@@ -170,42 +170,66 @@ Sub TestStuff()
     
     Dim testString As String
     Dim responsePosition As Integer
+    Dim startBracePosition As Integer
     Dim endBracePosition As Integer
     Dim tempPosition As Integer
-    Dim part As String
+    Dim startPosition As Integer
+    Dim bracePart As String
+    Dim textPart As String
     Dim endResult As String
     Dim leftSquareBracket As Integer
     Dim rightSquareBracket As Integer
+    Dim textPosition As Integer
+    Dim tablePosition As Integer
+    Dim responseWord As String
     Dim textWord As String
     Dim radioWord As String
     Dim tableWord As String
+    responseWord = """response"""
     textWord = """text"""
     radioWord = """radio"""
     tableWord = """tableinput"""
-    part = ""
+    responsePosition = 0
+    textPosition = 0
+    tablePosition = 0
+    startBracePosition = 0
+    endBracePosition = 1
+    tempPosition = 1
+    startPosition = 0
+    bracePart = ""
+    textPart = ""
     endResult = "'"
-    testString = "{""response"":[""4"",""4"",""4"",""4""],""id"":""cRfOQWkYns"",""type"":""tableinput""}"
-    testString = "{""response"":{""text"":""that i could make it into anything""}"
-    responsePosition = InStr(1, testString, """response""")
-    endBracePosition = InStr(1, testString, "}")
-'    leftSquareBracket = InStr(1, testString, "[")
-'    rightSquareBracket = InStr(1, testString, "]")
-'    part = Mid(testString, leftSquareBracket, (rightSquareBracket - leftSquareBracket + 1))
+    testString = "{""response"":{""id"":""QHiT51wr1p"",""text"":""a) taste""}{""response"":{""text"":""Another method of testing for saltiness would be to......""}{""response"":{""id"":""3VczISATqq"",""text"":""a) team average""}{""response"":{""id"":""eDLtrWIAyK"",""text"":""a) 4 (best chip)""}{""response"":[""1"",""2"",""3"",""1""],""id"":""YWEyzZrkFP"",""type"":""tableinput""}"
+    Debug.Print testString
     Do While tempPosition > 0
-        responsePosition = InStr(responsePosition + 1, word, """response""")
-        endBracePosition = InStr(responsePosition + 1, word, "}")
-        part = Mid(word, responsePosition, (endBracePosition - responsePosition + 1))
-        tempPosition = InStr(responsePosition + 1, word, """response""")
+        startBracePosition = InStr(tempPosition, testString, "{")
+        endBracePosition = InStr(tempPosition, testString, "}")
+        tempPosition = endBracePosition + 1
+        Debug.Print startBracePosition & " start " & endBracePosition & " end"
+        bracePart = Mid(testString, startBracePosition, (endBracePosition - startBracePosition + 1))
+        Debug.Print bracePart
+        Debug.Print "de brace"
+        If InStr(1, bracePart, textWord) > 0 Then
+            textPosition = InStr(1, bracePart, textWord)
+            endBracePosition = InStr(1, bracePart, "}")
+            Debug.Print textPosition & " text " & endBracePosition & " endBrace"
+            textPart = Mid(bracePart, textPosition + 7, (endBracePosition - textPosition - 7))
+            Debug.Print "part 1 works"
+            Debug.Print textPart
+        ElseIf InStr(1, testString, tableWord) > 0 Then
+            leftSquareBracket = InStr(1, bracePart, "[")
+            rightSquareBracket = InStr(1, bracePart, "]")
+            textPart = Mid(bracePart, leftSquareBracket, (rightSquareBracket - leftSquareBracket + 1))
+            Debug.Print "part 2 works"
+            Debug.Print textPart
+        End If
+        textPosition = 0
+        tablePosition = 0
+        If InStr(tempPosition, testString, "{") = 0 Then
+            tempPosition = 0
+        End If
+        
     Loop
-    If InStr(1, testString, textWord) > 0 Then
-        part = Mid(testString, responsePosition + 19, (endBracePosition - responsePosition - 19))
-    ElseIf InStr(1, testString, tableWord) > 0 Then
-        leftSquareBracket = InStr(1, testString, "[")
-        rightSquareBracket = InStr(1, testString, "]")
-        part = Mid(testString, leftSquareBracket, (rightSquareBracket - leftSquareBracket + 1))
-   End If
-    Debug.Print part
-'Basically next step is to incoporate the parts inside the loop
     
     
 End Sub
