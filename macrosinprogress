@@ -270,11 +270,15 @@ Sub TestStuff()
                     End If
                     finalWords = finalWords & " + " & textPart
                 Loop
+                'textposition loop
                 Debug.Print finalWords
                 Cells(rowNum, colNum).Value = finalWords
             End If
         Loop
+        colNum = colNum + 1
     Loop
+    rowNum = rowNum + 1
+    colNum = origColNum
 End Sub
 
 
