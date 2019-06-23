@@ -240,6 +240,11 @@ Sub TestStuff()
         Do While colNum < 50
             word = currentBook.Sheets(currentSheetName).Cells(rowNum, colNum).Value
             Cells(rowNum, colNum).Value = ""
+            startBracePosition = 0
+            endBracePosition = 1
+            tempPosition = 1
+            startPosition = 0
+            finalWords = ""
             If Len(word) > 0 Then
                 Do While tempPosition > 0
                     startBracePosition = InStr(tempPosition, word, "{")
@@ -249,7 +254,7 @@ Sub TestStuff()
                     bracePart = Mid(word, startBracePosition, (endBracePosition - startBracePosition + 1))
                     Debug.Print bracePart
                     Debug.Print "de brace"
-                    If InStr(1, bracePart, textWord) > 0 Then
+                    If InStr(1, bracePart, textWord) > 0 And InStr(1, bracePart, "null") <= 0 Then
                         textPosition = InStr(1, bracePart, textWord)
                         endBracePosition = InStr(1, bracePart, "}")
                         Debug.Print textPosition & " text " & endBracePosition & " endBrace"
