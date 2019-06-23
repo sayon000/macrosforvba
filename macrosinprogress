@@ -212,6 +212,7 @@ Sub TestStuff()
     Dim rightSquareBracket As Integer
     Dim textPosition As Integer
     Dim tablePosition As Integer
+    Dim preLimBracePart As String
     Dim responseWord As String
     Dim textWord As String
     Dim radioWord As String
@@ -229,12 +230,11 @@ Sub TestStuff()
     endBracePosition = 1
     tempPosition = 1
     startPosition = 0
+    preLimBracePart = ""
     bracePart = ""
     textPart = ""
     endResult = "'"
     finalWords = ""
-    testString = "{""response"":{""id"":""EMrd6ZlneS"",""text"":""b) whole group""}{""response"":{""text"":""We will rate the chip by....""}{""response"":[""2"",""1"",""2"",""3""],""id"":""cRfOQWkYns"",""type"":""tableinput""}"
-    Debug.Print testString
 
     Do While rowNum < 100
         Do While colNum < 50
@@ -246,7 +246,7 @@ Sub TestStuff()
                     endBracePosition = InStr(tempPosition, word, "}")
                     tempPosition = endBracePosition + 1
                     Debug.Print startBracePosition & " start " & endBracePosition & " end"
-                    bracePart = Mid(testString, startBracePosition, (endBracePosition - startBracePosition + 1))
+                    bracePart = Mid(word, startBracePosition, (endBracePosition - startBracePosition + 1))
                     Debug.Print bracePart
                     Debug.Print "de brace"
                     If InStr(1, bracePart, textWord) > 0 Then
@@ -270,15 +270,13 @@ Sub TestStuff()
                     End If
                     finalWords = finalWords & " + " & textPart
                 Loop
-                'textposition loop
                 Debug.Print finalWords
                 Cells(rowNum, colNum).Value = finalWords
             End If
-        Loop
         colNum = colNum + 1
+        Loop
+        colNum = origColNum
+        rowNum = rowNum + 1
     Loop
-    rowNum = rowNum + 1
-    colNum = origColNum
 End Sub
-
 
