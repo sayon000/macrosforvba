@@ -76,8 +76,8 @@ Sub IsolateResponse()
     origColNum = 3
     rowNum = origRowNum
     colNum = origColNum
-    Do While rowNum < 50
-        Do While colNum < 50
+    Do While rowNum < 461
+        Do While colNum < 113
             word = currentBook.Sheets(currentSheetName).Cells(rowNum, colNum).Value
             Cells(rowNum, colNum).Value = ""
             If InStr(1, word, """response""") > 0 Then
@@ -143,8 +143,8 @@ Sub ExtractTheResponses()
     origColNum = 3
     rowNum = origRowNum
     colNum = origColNum
-    Do While rowNum < 100
-        Do While colNum < 50
+    Do While rowNum < 461
+        Do While colNum < 113
             word = currentBook.Sheets(currentSheetName).Cells(rowNum, colNum).Value
             Cells(rowNum, colNum).Value = ""
             Debug.Print word & " at row " & rowNum & " and at col " & colNum
@@ -240,28 +240,38 @@ Sub TestStuff()
         Do While colNum < 50
             word = currentBook.Sheets(currentSheetName).Cells(rowNum, colNum).Value
             Cells(rowNum, colNum).Value = ""
+            startBracePosition = 0
+            endBracePosition = 1
+            tempPosition = 1
+            startPosition = 0
+            finalWords = ""
             If Len(word) > 0 Then
                 Do While tempPosition > 0
                     startBracePosition = InStr(tempPosition, word, "{")
                     endBracePosition = InStr(tempPosition, word, "}")
                     tempPosition = endBracePosition + 1
+                    
                     Debug.Print startBracePosition & " start " & endBracePosition & " end"
+                    If startBracePosition < endBracePosition Then
                     bracePart = Mid(word, startBracePosition, (endBracePosition - startBracePosition + 1))
-                    Debug.Print bracePart
-                    Debug.Print "de brace"
-                    If InStr(1, bracePart, textWord) > 0 Then
-                        textPosition = InStr(1, bracePart, textWord)
-                        endBracePosition = InStr(1, bracePart, "}")
-                        Debug.Print textPosition & " text " & endBracePosition & " endBrace"
-                        textPart = Mid(bracePart, textPosition + 7, (endBracePosition - textPosition - 7))
-                        Debug.Print "part 1 works"
-                        Debug.Print textPart
-                    ElseIf InStr(1, testString, tableWord) > 0 Then
-                        leftSquareBracket = InStr(1, bracePart, "[")
-                        rightSquareBracket = InStr(1, bracePart, "]")
-                        textPart = Mid(bracePart, leftSquareBracket, (rightSquareBracket - leftSquareBracket + 1))
-                        Debug.Print "part 2 works"
-                        Debug.Print textPart
+                        Debug.Print bracePart
+                        Debug.Print "de brace"
+                        If InStr(1, bracePart, "null") > 0 Then
+                        'Do nothing
+                        ElseIf InStr(1, bracePart, textWord) > 0 Then
+                            textPosition = InStr(1, bracePart, textWord)
+                            endBracePosition = InStr(1, bracePart, "}")
+                            Debug.Print textPosition & " text " & endBracePosition & " endBrace"
+                            textPart = Mid(bracePart, textPosition + 7, (endBracePosition - textPosition - 7))
+                            Debug.Print "part 1 works"
+                            Debug.Print textPart
+                        ElseIf InStr(1, testString, tableWord) > 0 Then
+                            leftSquareBracket = InStr(1, bracePart, "[")
+                            rightSquareBracket = InStr(1, bracePart, "]")
+                            textPart = Mid(bracePart, leftSquareBracket, (rightSquareBracket - leftSquareBracket + 1))
+                            Debug.Print "part 2 works"
+                            Debug.Print textPart
+                        End If
                     End If
                     textPosition = 0
                     tablePosition = 0
@@ -278,5 +288,9 @@ Sub TestStuff()
         colNum = origColNum
         rowNum = rowNum + 1
     Loop
+    currentBook.Sheets(currentSheetName).Range("A1:B461").Copy _
+    Destination:=responseSheet.Range("A1:B461")
+    currentBook.Sheets(currentSheetName).Range("A3:DK3").Copy _
+    Destination:=responseSheet.Range("A3:DK3")
 End Sub
 
