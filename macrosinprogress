@@ -273,8 +273,10 @@ Sub TestStuff()
                 Debug.Print finalWords
                 Cells(rowNum, colNum).Value = finalWords
             End If
+        colNum = colNum + 1
         Loop
+        colNum = origColNum
+        rowNum = rowNum + 1
     Loop
 End Sub
-
 
