@@ -85,8 +85,6 @@ Sub IsolateResponse()
                     Cells(rowNum, colNum).Value = Cells(rowNum, colNum).Value & "{"
                     responsePosition = InStr(responsePosition + 1, word, """response""")
                     endBracePosition = InStr(responsePosition + 1, word, "}")
-                    Debug.Print responsePosition & " is response"
-                    Debug.Print endBracePosition & " is end brace"
                     cutStuff = Mid(word, responsePosition, (endBracePosition - responsePosition + 1))
                     Cells(rowNum, colNum).Value = Cells(rowNum, colNum).Value & cutStuff
                     tempPosition = InStr(responsePosition + 1, word, """response""")
@@ -106,71 +104,7 @@ Sub IsolateResponse()
     
 End Sub
 
-Sub ExtractTheResponses()
-    Dim currentFileName As String
-    Dim newSheetName As String
-    Dim currentSheetName As String
-
-    currentFileName = "report (1).xlsm"
-    newSheetName = "Extracted Responses"
-    currentSheetName = "Isolated Responses"
-
-    Dim currentBook As Workbook
-    Dim responseSheet As Worksheet
-    Dim dataSheet As Worksheet
-    Set currentBook = Workbooks(currentFileName)
-    Set dataSheet = Worksheets(currentSheetName)
-    Set responseSheet = currentBook.Worksheets.Add(Type:=xlWorksheet, After:=Application.ActiveSheet)
-
-    With responseSheet
-        .Name = newSheetName
-    End With
-'Copy the whole worksheet then do the shit
-    Dim word As String
-    Dim responsePosition As Integer
-    Dim tempPosition As Integer
-    Dim endBracePosition As Integer
-    Dim initResPos As Integer
-    Dim cutStuff As String
-    responsePosition = 1
-    tempPosition = 1
-    'In this stuff, the index starts at 0, not one lol
-    Dim origRowNum As Integer
-    Dim origColNum As Integer
-    Dim rowNum As Integer
-    Dim colNum As Integer
-    origRowNum = 4
-    origColNum = 3
-    rowNum = origRowNum
-    colNum = origColNum
-    Do While rowNum < 461
-        Do While colNum < 113
-            word = currentBook.Sheets(currentSheetName).Cells(rowNum, colNum).Value
-            Cells(rowNum, colNum).Value = ""
-            Debug.Print word & " at row " & rowNum & " and at col " & colNum
-            If InStr(1, word, """response""") > 0 Then
-                Do While tempPosition > 0
-                    Cells(rowNum, colNum).Value = Cells(rowNum, colNum).Value & "{"
-                    responsePosition = InStr(responsePosition + 1, word, """response""")
-                    endBracePosition = InStr(responsePosition + 1, word, "}")
-                    Debug.Print responsePosition & " is response"
-                    Debug.Print endBracePosition & " is end brace"
-                    cutStuff = Mid(word, responsePosition, (endBracePosition - responsePosition + 1))
-                    Cells(rowNum, colNum).Value = Cells(rowNum, colNum).Value & cutStuff
-                    tempPosition = InStr(responsePosition + 1, word, """response""")
-                Loop
-            End If
-            colNum = colNum + 1
-            responsePosition = 1
-            tempPosition = 1
-            Loop
-        rowNum = rowNum + 1
-        colNum = origColNum
-        Loop
-
-End Sub
-
-Sub TestStuff()
+Sub ExtractResponse()
     Dim currentFileName As String
     Dim newSheetName As String
     Dim currentSheetName As String
