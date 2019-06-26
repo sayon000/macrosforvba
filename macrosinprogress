@@ -221,6 +221,9 @@ Sub ExtractResponse()
     rowNum = rowNum + 1
     colNum = origColNum
     Loop
-    
+    currentBook.Sheets(currentSheetName).Range("A1:B461").Copy _
+    Destination:=responseSheet.Range("A1:B461")
+    currentBook.Sheets(currentSheetName).Range("A3:DK3").Copy _
+    Destination:=responseSheet.Range("A3:DK3")
 End Sub
 
