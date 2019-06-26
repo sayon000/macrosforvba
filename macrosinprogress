@@ -173,8 +173,8 @@ Sub ExtractResponse()
     rowNum = origRowNum
     colNum = origColNum
     
-    Do While rowNum < 50
-        Do While colNum < 50
+    Do While rowNum < 461
+        Do While colNum < 113
             finalWord = ""
             testString = currentBook.Sheets(currentSheetName).Cells(rowNum, colNum).Value
             Cells(rowNum, colNum).Value = ""
