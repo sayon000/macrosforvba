@@ -76,8 +76,8 @@ Sub IsolateResponse()
     origColNum = 3
     rowNum = origRowNum
     colNum = origColNum
-    Do While rowNum < 50
-        Do While colNum < 50
+    Do While rowNum < 461
+        Do While colNum < 113
             word = currentBook.Sheets(currentSheetName).Cells(rowNum, colNum).Value
             Cells(rowNum, colNum).Value = ""
             If InStr(1, word, """response""") > 0 Then
@@ -143,8 +143,8 @@ Sub ExtractTheResponses()
     origColNum = 3
     rowNum = origRowNum
     colNum = origColNum
-    Do While rowNum < 100
-        Do While colNum < 50
+    Do While rowNum < 461
+        Do While colNum < 113
             word = currentBook.Sheets(currentSheetName).Cells(rowNum, colNum).Value
             Cells(rowNum, colNum).Value = ""
             Debug.Print word & " at row " & rowNum & " and at col " & colNum
@@ -171,34 +171,7 @@ Sub ExtractTheResponses()
 End Sub
 
 Sub TestStuff()
-    Dim currentFileName As String
-    Dim newSheetName As String
-    Dim currentSheetName As String
-
-    currentFileName = "report (1).xlsm"
-    newSheetName = "Extracted Responses"
-    currentSheetName = "Isolated Responses"
-
-    Dim currentBook As Workbook
-    Dim responseSheet As Worksheet
-    Dim extractSheet As Worksheet
-    Set currentBook = Workbooks(currentFileName)
-    Set extractSheet = Worksheets(currentSheetName)
-    Set extractSheet = currentBook.Worksheets.Add(Type:=xlWorksheet, After:=Application.ActiveSheet)
-
-    With extractSheet
-        .Name = newSheetName
-    End With
-
-    Dim origRowNum As Integer
-    Dim origColNum As Integer
-    Dim rowNum As Integer
-    Dim colNum As Integer
-    origRowNum = 4
-    origColNum = 3
-    rowNum = origRowNum
-    colNum = origColNum
-
+    
     Dim testString As String
     Dim responsePosition As Integer
     Dim startBracePosition As Integer
@@ -212,17 +185,21 @@ Sub TestStuff()
     Dim rightSquareBracket As Integer
     Dim textPosition As Integer
     Dim tablePosition As Integer
-    Dim preLimBracePart As String
     Dim responseWord As String
     Dim textWord As String
     Dim radioWord As String
     Dim tableWord As String
-    Dim word As String
-    Dim finalWords As String
+    Dim challengeWord As String
+    Dim orWord As String
+    Dim choicesWord As String
+    Dim finalWord As String
     responseWord = """response"""
     textWord = """text"""
     radioWord = """radio"""
     tableWord = """tableinput"""
+    challengeWord = """challenge"""""
+    orWord = """or"""
+    choicesWord = """choices"""
     responsePosition = 0
     textPosition = 0
     tablePosition = 0
@@ -230,53 +207,43 @@ Sub TestStuff()
     endBracePosition = 1
     tempPosition = 1
     startPosition = 0
-    preLimBracePart = ""
     bracePart = ""
     textPart = ""
     endResult = "'"
-    finalWords = ""
-
-    Do While rowNum < 100
-        Do While colNum < 50
-            word = currentBook.Sheets(currentSheetName).Cells(rowNum, colNum).Value
-            Cells(rowNum, colNum).Value = ""
-            If Len(word) > 0 Then
-                Do While tempPosition > 0
-                    startBracePosition = InStr(tempPosition, word, "{")
-                    endBracePosition = InStr(tempPosition, word, "}")
-                    tempPosition = endBracePosition + 1
-                    Debug.Print startBracePosition & " start " & endBracePosition & " end"
-                    bracePart = Mid(word, startBracePosition, (endBracePosition - startBracePosition + 1))
-                    Debug.Print bracePart
-                    Debug.Print "de brace"
-                    If InStr(1, bracePart, textWord) > 0 Then
-                        textPosition = InStr(1, bracePart, textWord)
-                        endBracePosition = InStr(1, bracePart, "}")
-                        Debug.Print textPosition & " text " & endBracePosition & " endBrace"
-                        textPart = Mid(bracePart, textPosition + 7, (endBracePosition - textPosition - 7))
-                        Debug.Print "part 1 works"
-                        Debug.Print textPart
-                    ElseIf InStr(1, testString, tableWord) > 0 Then
-                        leftSquareBracket = InStr(1, bracePart, "[")
-                        rightSquareBracket = InStr(1, bracePart, "]")
-                        textPart = Mid(bracePart, leftSquareBracket, (rightSquareBracket - leftSquareBracket + 1))
-                        Debug.Print "part 2 works"
-                        Debug.Print textPart
-                    End If
-                    textPosition = 0
-                    tablePosition = 0
-                    If InStr(tempPosition, testString, "{") = 0 Then
-                        tempPosition = 0
-                    End If
-                    finalWords = finalWords & " + " & textPart
-                Loop
-                Debug.Print finalWords
-                Cells(rowNum, colNum).Value = finalWords
-            End If
-        colNum = colNum + 1
-        Loop
-        colNum = origColNum
-        rowNum = rowNum + 1
+    finalWord = ""
+'    testString = "{""response"":{""id"":""QHiT51wr1p"",""text"":""a) taste""}{""response"":{""text"":""Another method of testing for saltiness would be to......""}{""response"":{""id"":""3VczISATqq"",""text"":""a) team average""}{""response"":{""id"":""eDLtrWIAyK"",""text"":""a) 4 (best chip)""}{""response"":[""1"",""2"",""3"",""1""],""id"":""YWEyzZrkFP"",""type"":""tableinput""}"
+    testString = Cells(369, 3).Value
+    Debug.Print testString
+    Do While tempPosition > 0
+        startBracePosition = InStr(tempPosition, testString, "{")
+        endBracePosition = InStr(tempPosition, testString, "}")
+        tempPosition = endBracePosition + 1
+        Debug.Print startBracePosition & " start " & endBracePosition & " end"
+        bracePart = Mid(testString, startBracePosition, (endBracePosition - startBracePosition + 1))
+        Debug.Print bracePart
+        Debug.Print "de brace"
+        If InStr(1, bracePart, textWord) > 0 Then
+            textPosition = InStr(1, bracePart, textWord)
+            endBracePosition = InStr(1, bracePart, "}")
+            Debug.Print textPosition & " text " & endBracePosition & " endBrace"
+            textPart = Mid(bracePart, textPosition + 7, (endBracePosition - textPosition - 7))
+            Debug.Print "part 1 works"
+            Debug.Print textPart
+        ElseIf InStr(1, testString, tableWord) > 0 Or InStr(1, testString, orWord) > 0 Or InStr(1, testString, choicesWord) Then
+            leftSquareBracket = InStr(1, bracePart, "[")
+            rightSquareBracket = InStr(1, bracePart, "]")
+            textPart = Mid(bracePart, leftSquareBracket, (rightSquareBracket - leftSquareBracket + 1))
+            Debug.Print "part 2 works"
+            Debug.Print textPart
+        End If
+        textPosition = 0
+        tablePosition = 0
+        If InStr(tempPosition, testString, "{") = 0 Then
+            tempPosition = 0
+        End If
+        finalWord = finalWord & " + " & textPart
     Loop
+    Debug.Print finalWord & " is final"
+    
 End Sub
 
