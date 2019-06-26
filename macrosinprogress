@@ -212,7 +212,7 @@ Sub TestStuff()
     endResult = "'"
     finalWord = ""
 '    testString = "{""response"":{""id"":""QHiT51wr1p"",""text"":""a) taste""}{""response"":{""text"":""Another method of testing for saltiness would be to......""}{""response"":{""id"":""3VczISATqq"",""text"":""a) team average""}{""response"":{""id"":""eDLtrWIAyK"",""text"":""a) 4 (best chip)""}{""response"":[""1"",""2"",""3"",""1""],""id"":""YWEyzZrkFP"",""type"":""tableinput""}"
-    testString = Cells(369, 3).Value
+    testString = Cells(4, 3).Value
     Debug.Print testString
     Do While tempPosition > 0
         startBracePosition = InStr(tempPosition, testString, "{")
@@ -225,15 +225,12 @@ Sub TestStuff()
         If InStr(1, bracePart, textWord) > 0 Then
             textPosition = InStr(1, bracePart, textWord)
             endBracePosition = InStr(1, bracePart, "}")
-            Debug.Print textPosition & " text " & endBracePosition & " endBrace"
             textPart = Mid(bracePart, textPosition + 7, (endBracePosition - textPosition - 7))
-            Debug.Print "part 1 works"
             Debug.Print textPart
         ElseIf InStr(1, testString, tableWord) > 0 Or InStr(1, testString, orWord) > 0 Or InStr(1, testString, choicesWord) Then
             leftSquareBracket = InStr(1, bracePart, "[")
             rightSquareBracket = InStr(1, bracePart, "]")
             textPart = Mid(bracePart, leftSquareBracket, (rightSquareBracket - leftSquareBracket + 1))
-            Debug.Print "part 2 works"
             Debug.Print textPart
         End If
         textPosition = 0
