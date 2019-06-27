@@ -88,7 +88,7 @@ Sub IsolateResponse()
     origRowNum = 4
     origColNum = 3
     maxRowNum = 461
-    maxColNum = 113
+    maxColNum = 115
     
     rowNum = origRowNum
     colNum = origColNum
@@ -220,7 +220,7 @@ Sub ExtractResponse()
     origRowNum = 4
     origColNum = 3
     maxRowNum = 461
-    maxColNum = 113
+    maxColNum = 115
     
     rowNum = origRowNum
     colNum = origColNum
@@ -228,7 +228,7 @@ Sub ExtractResponse()
     'What I did was I initialized variables that would help us loop through each data cell
     
     Do While rowNum <= maxRowNum
-        Do While colNum < maxColNum
+        Do While colNum <= maxColNum
             
             'In this double loop, we will iterate through each cell. In each cell, we will take the value of that cell.
             'Afterwards, if it is an empty string, we do nothing. Otherwise, we will loop through the string through each pair of end braces
