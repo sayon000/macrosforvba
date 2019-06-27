@@ -29,6 +29,7 @@ Sub MakeABook()
     
    'Cells(r,c) gets the cell at row r and column c
    'This is all hardcoded because we do not need a generalized way to get things in this project
+    'modify the range to the one that is needed
    
     currentBook.Sheets(currentSheetName).Range("A3:B461").Copy _
     Destination:=newSheet.Range("A3:B461")
@@ -115,6 +116,7 @@ Sub IsolateResponse()
         Loop
         
     'This copies the names and headers on the top and sides
+    'change the range to the range that is needed to copy
 
     currentBook.Sheets(currentSheetName).Range("A1:B461").Copy _
     Destination:=responseSheet.Range("A1:B461")
