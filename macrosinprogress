@@ -45,6 +45,10 @@ Sub IsolateResponse()
     Dim newSheetName As String
     Dim currentSheetName As String
     
+    'Below, we will change the file names to whatever works for you. If you wanna change the name, change the corresponding entry below
+    'For example, if you want your new sheet to be called "Clean Data", do this: newSheetName =  "Clean Data" (the title has to be in quotes)
+    'For file name, you have to type it exactly with all spaces and THE CORRECT ending.
+    
     currentFileName = "report (1).xlsm"
     newSheetName = "Isolated Responses"
     currentSheetName = "Test Making New Sheet"
@@ -132,7 +136,10 @@ Sub ExtractResponse()
     Dim newSheetName As String
     Dim currentSheetName As String
     
-    'CHANGE THIS VARIABLE TO THE NAME OF THE FILE
+    'Below, we will change the file names to whatever works for you. If you wanna change the name, change the corresponding entry below
+    'For example, if you want your new sheet to be called "Clean Data", do this: newSheetName =  "Clean Data" (the title has to be in quotes)
+    'For file name, you have to type it exactly with all spaces and THE CORRECT ending.
+    
     currentFileName = "report (1).xlsm"
     
     newSheetName = "Extracted Responses"
