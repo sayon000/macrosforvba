@@ -39,6 +39,7 @@ Sub MakeABook()
 End Sub
 
 Sub IsolateResponse()
+    
     Dim currentFileName As String
     Dim newSheetName As String
     Dim currentSheetName As String
@@ -57,7 +58,7 @@ Sub IsolateResponse()
     With responseSheet
         .Name = newSheetName
     End With
-'Copy the whole worksheet then do the shit
+    
     Dim word As String
     Dim responsePosition As Integer
     Dim tempPosition As Integer
@@ -66,18 +67,33 @@ Sub IsolateResponse()
     Dim cutStuff As String
     responsePosition = 1
     tempPosition = 1
-    'In this stuff, the index starts at 0, not one lol
+    'In this stuff, the index starts at 1, not 0
+    
+    
     Dim origRowNum As Integer
     Dim origColNum As Integer
+    Dim maxRowNum As Integer
+    Dim maxColNum As Integer
     Dim rowNum As Integer
     Dim colNum As Integer
-'This stuff above copies the names and things
+    
+    'Change origRowNum and origColNum to the rows and columns that you start from and maxRowNum and maxColNum to the maximum
+    'number of rows and columns
+    
     origRowNum = 4
     origColNum = 3
+    maxRowNum = 461
+    maxColNum = 113
+    
     rowNum = origRowNum
     colNum = origColNum
-    Do While rowNum < 461
-        Do While colNum < 113
+    
+    Do While rowNum <= maxRowNum
+        Do While colNum <= maxColNum
+            
+            'This code takes the value of each cell. Everytime it finds the word response, it will find the position of the endbrace and it would copy
+            'everything inside the repsonse section
+            
             word = currentBook.Sheets(currentSheetName).Cells(rowNum, colNum).Value
             Cells(rowNum, colNum).Value = ""
             If InStr(1, word, """response""") > 0 Then
@@ -97,6 +113,9 @@ Sub IsolateResponse()
         rowNum = rowNum + 1
         colNum = origColNum
         Loop
+        
+    'This copies the names and headers on the top and sides
+
     currentBook.Sheets(currentSheetName).Range("A1:B461").Copy _
     Destination:=responseSheet.Range("A1:B461")
     currentBook.Sheets(currentSheetName).Range("A3:DK3").Copy _
@@ -105,11 +124,15 @@ Sub IsolateResponse()
 End Sub
 
 Sub ExtractResponse()
+    
+    'This code is copied from above, it is used to create a new sheet
     Dim currentFileName As String
     Dim newSheetName As String
     Dim currentSheetName As String
-
+    
+    'CHANGE THIS VARIABLE TO THE NAME OF THE FILE
     currentFileName = "report (1).xlsm"
+    
     newSheetName = "Extracted Responses"
     currentSheetName = "Isolated Responses"
 
@@ -123,6 +146,9 @@ Sub ExtractResponse()
     With responseSheet
         .Name = newSheetName
     End With
+    
+    'The following dims are here to instantiate the variables that will be used later on.
+    'I will explain each of the variables as they pop up
     
     Dim testString As String
     Dim responsePosition As Integer
@@ -145,13 +171,21 @@ Sub ExtractResponse()
     Dim orWord As String
     Dim choicesWord As String
     Dim finalWord As String
+    
+    'In these cases, I assigned these specific values for these specific words
+    'The way I did the isolation was that I checked for specific types in the words. The types I used were
+    ' text, radio,tableinput,challenge and or. As you go down, each specific type has a specific way to extract the data.
+    
     responseWord = """response"""
     textWord = """text"""
     radioWord = """radio"""
     tableWord = """tableinput"""
-    challengeWord = """challenge"""""
+    challengeWord = """challenge"""
     orWord = """or"""
     choicesWord = """choices"""
+    
+    'Initializing the variables for use over here
+    
     responsePosition = 0
     textPosition = 0
     tablePosition = 0
@@ -166,34 +200,48 @@ Sub ExtractResponse()
     
     Dim origRowNum As Integer
     Dim origColNum As Integer
+    Dim maxRowNum As Integer
+    Dim maxColNum As Integer
     Dim rowNum As Integer
     Dim colNum As Integer
+    
+    'Change origRowNum and origColNum to the rows and columns that you start from and maxRowNum and maxColNum to the maximum
+    'number of rows and columns
+    
     origRowNum = 4
     origColNum = 3
+    maxRowNum = 461
+    maxColNum = 113
+    
     rowNum = origRowNum
     colNum = origColNum
     
-    Do While rowNum < 461
-        Do While colNum < 113
+    'What I did was I initialized variables that would help us loop through each data cell
+    
+    Do While rowNum <= maxRowNum
+        Do While colNum < maxColNum
+            
+            'In this double loop, we will iterate through each cell. In each cell, we will take the value of that cell.
+            'Afterwards, if it is an empty string, we do nothing. Otherwise, we will loop through the string through each pair of end braces
+            '(hence the use of bracepart). After that, we use type to check which type it is and then we use the respective statement to extract what we want.
+            'finalWord is used to store the string that is placed into the new worksheet with extracted values
+            
             finalWord = ""
             testString = currentBook.Sheets(currentSheetName).Cells(rowNum, colNum).Value
             Cells(rowNum, colNum).Value = ""
-            Debug.Print testString & " is the test string"
+            
             If Len(testString) > 0 Then
+                
                 Do While tempPosition > 0
                     startBracePosition = InStr(tempPosition, testString, "{")
                     endBracePosition = InStr(tempPosition, testString, "}")
                     tempPosition = endBracePosition + 1
-                    Debug.Print startBracePosition & " start " & endBracePosition & " end"
                     bracePart = Mid(testString, startBracePosition, (endBracePosition - startBracePosition + 1))
-                    Debug.Print bracePart
-                    Debug.Print "de brace"
                     If InStr(1, bracePart, textWord) > 0 Then
                         If Not InStr(1, bracePart, "null") > 0 Then
                         textPosition = InStr(1, bracePart, textWord)
                         endBracePosition = InStr(1, bracePart, "}")
                            textPart = Mid(bracePart, textPosition + 7, (endBracePosition - textPosition - 7))
-                        Debug.Print textPart
                         End If
                     ElseIf InStr(1, testString, radioWord) Then
                     'do nothing
@@ -201,8 +249,10 @@ Sub ExtractResponse()
                         leftSquareBracket = InStr(1, bracePart, "[")
                         rightSquareBracket = InStr(1, bracePart, "]")
                         textPart = Mid(bracePart, leftSquareBracket, (rightSquareBracket - leftSquareBracket + 1))
-                        Debug.Print textPart
                     End If
+                    
+                    'We need to reset the positions to 0 or we will get errors, tempPosition is changed later
+                    
                     textPosition = 0
                     tablePosition = 0
                     If InStr(tempPosition, testString, "{") = 0 Then
@@ -211,8 +261,10 @@ Sub ExtractResponse()
                     finalWord = finalWord & " + " & textPart
                 Loop
                 Cells(rowNum, colNum).Value = finalWord
-                Debug.Print finalWord & " is final"
             End If
+
+        'It is important to remember to increment the loop indices as well as to reset the positions of what we used
+
         colNum = colNum + 1
         startBracePosition = 0
         endBracePosition = 1
@@ -221,9 +273,14 @@ Sub ExtractResponse()
     rowNum = rowNum + 1
     colNum = origColNum
     Loop
+    
+    'This copies the left side and the top row of the sheets with the names and headers
+    
     currentBook.Sheets(currentSheetName).Range("A1:B461").Copy _
     Destination:=responseSheet.Range("A1:B461")
     currentBook.Sheets(currentSheetName).Range("A3:DK3").Copy _
     Destination:=responseSheet.Range("A3:DK3")
+
+
 End Sub
 
